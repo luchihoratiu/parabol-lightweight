@@ -45,7 +45,6 @@
     "ultrahook": "export $(grep ^ULTRAHOOK_API_KEY .env | tr -d \"'\") && ultrahook -k $ULTRAHOOK_API_KEY dev 3000",
     "precommit": "lerna run --stream precommit",
     "postcheckout": "node scripts/generateGraphQLArtifacts.js &>/dev/null &",
-    "prepare": "husky install",
     "test:server": "yarn workspace parabol-server test"
   },
   "resolutions": {
@@ -84,7 +83,6 @@
     "babel-loader": "8.2.3",
     "eslint-config-prettier": "^8.5.0",
     "graphql": "15.7.2",
-    "husky": "^7.0.4",
     "jscodeshift": "^0.13.0",
     "lerna": "^4.0.0",
     "minimist": "^1.2.5",
