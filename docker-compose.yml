@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   db:
-    image: rethinkdb:latest
+    image: arm64v8/rethinkdb:latest
     ports:
       - '8080:8080'
       - '29015:29015'
@@ -12,7 +12,7 @@ services:
     networks:
       - parabol-network
   postgres:
-    image: postgres:12.10
+    image: arm64v8/postgres:12.10
     restart: always
     env_file: .env
     ports:
@@ -24,7 +24,7 @@ services:
     networks:
       - parabol-network
   redis:
-    image: redis
+    image: arm64v8/redis
     ports:
       - '6379:6379'
     volumes:
