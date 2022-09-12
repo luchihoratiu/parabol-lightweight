@@ -11,7 +11,6 @@ import LoadingComponent from '../LoadingComponent/LoadingComponent'
 import PrivateRoutes from '../PrivateRoutes'
 import Snackbar from '../Snackbar'
 
-const AnalyticsPage = lazy(() => import(/* webpackChunkName: 'AnalyticsPage' */ '../AnalyticsPage'))
 const AuthenticationPage = lazy(() =>
   import(/* webpackChunkName: 'AuthenticationPage' */ '../AuthenticationPage')
 )
@@ -44,7 +43,6 @@ const Action = memo(() => {
       <ErrorBoundary>
         <Snackbar />
         <Suspense fallback={<LoadingComponent spinnerSize={LoaderSize.WHOLE_PAGE} />}>
-          <AnalyticsPage />
           <Switch>
             <Route exact path='/' render={(p) => <AuthenticationPage {...p} page={'signin'} />} />
             <Route
