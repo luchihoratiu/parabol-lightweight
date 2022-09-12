@@ -57,10 +57,6 @@ const StyledButton = styled(SecondaryButton)({
   width: 112
 })
 
-const UserAvatarInput = lazy(
-  () => import(/* webpackChunkName: 'UserAvatarInput' */ '../../../../components/UserAvatarInput')
-)
-
 interface UserSettingsProps extends WithFormProps<'preferredName'> {
   viewer: UserProfileQueryResponse['viewer']
 }
@@ -86,7 +82,6 @@ function UserSettings(props: UserSettingsProps) {
       <div onClick={togglePortal}>
         <EditableAvatar picture={pictureOrDefault} size={96} />
       </div>
-      {modalPortal(<UserAvatarInput picture={pictureOrDefault} />)}
       <InfoBlock>
         <FieldLabel
           customStyles={{paddingBottom: 8}}

@@ -38,9 +38,6 @@ const UpdateUserProfileMutation = (environment, updatedUser, {onError, onComplet
         if (preferredName) {
           viewer.setValue(preferredName, 'preferredName')
         }
-        if (picture) {
-          viewer.setValue(picture, 'picture')
-        }
       }
     },
     onCompleted,
