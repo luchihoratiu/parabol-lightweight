@@ -89,20 +89,6 @@ const StandardHubUserMenu = (props: Props) => {
           }
         />
       )}
-      {showUpgradeCTA && <MenuItemHR key='HR0' />}
-      {showUpgradeCTA && (
-        <MenuItem
-          label={
-            <MenuItemLink to={`/me/organizations${routeSuffix}`}>
-              <UpgradeIcon>star</UpgradeIcon>
-              <UpgradeCTA>
-                {'Upgrade to '}
-                <b>{TierLabel.PRO}</b>
-              </UpgradeCTA>
-            </MenuItemLink>
-          }
-        />
-      )}
       <MenuItemHR key='HR1' />
       <MenuItem
         label={

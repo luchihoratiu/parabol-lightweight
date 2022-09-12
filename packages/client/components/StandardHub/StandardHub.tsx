@@ -31,7 +31,8 @@ const User = styled('div')({
   display: 'flex',
   cursor: 'pointer',
   flex: 1,
-  position: 'relative'
+  position: 'relative',
+  paddingBottom: 16
 })
 
 const StyledAvatar = styled(Avatar)({
@@ -59,28 +60,6 @@ const Email = styled('div')({
   lineHeight: '16px'
 })
 
-const Upgrade = styled(PlainButton)({
-  background: 'transparent',
-  color: PALETTE.GOLD_300,
-  display: 'flex',
-  fontWeight: 600,
-  paddingTop: 16,
-  paddingBottom: 16
-})
-
-const UpgradeCTA = styled('span')({
-  fontSize: 14,
-  lineHeight: '24px',
-  paddingLeft: 16
-})
-
-const Tier = styled(TierTag)({
-  marginLeft: 64,
-  marginBottom: 16,
-  padding: '0 16px',
-  width: 'fit-content'
-})
-
 interface Props {
   handleMenuClick: () => void
   viewer: StandardHub_viewer | null
@@ -98,10 +77,6 @@ const StandardHub = (props: Props) => {
   const {email, picture, preferredName, tier} = viewer || DEFAULT_VIEWER
   const userAvatar = picture || defaultUserAvatar
   const {history} = useRouter()
-  const handleUpgradeClick = () => {
-    history.push(`/me/organizations`)
-    handleMenuClick()
-  }
   const gotoUserSettings = () => {
     history.push('/me/profile')
     handleMenuClick()
@@ -115,17 +90,6 @@ const StandardHub = (props: Props) => {
           <Email>{email}</Email>
         </NameAndEmail>
       </User>
-      {tier === 'personal' ? (
-        <Upgrade onClick={handleUpgradeClick}>
-          <Icon>verified_user</Icon>
-          <UpgradeCTA>
-            {'Upgrade to '}
-            <b>{TierLabel.PRO}</b>
-          </UpgradeCTA>
-        </Upgrade>
-      ) : (
-        <Tier tier={tier as TierEnum} />
-      )}
     </StandardHubRoot>
   )
 }

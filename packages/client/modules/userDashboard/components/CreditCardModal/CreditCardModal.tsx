@@ -63,7 +63,6 @@ const CreditCardModal = (props: Props) => {
   return (
     <Container data-private>
       <DialogTitle>
-        {actionType === 'update' ? 'Update Credit Card' : 'Upgrade to Pro'}
         {actionType !== 'update' && (
           <a href={ExternalLinks.PRICING_LINK} rel='noopener noreferrer' target='blank'>
             <Info>info</Info>

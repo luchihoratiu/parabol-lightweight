@@ -4,7 +4,6 @@ import React, {lazy, useEffect} from 'react'
 import {PreloadedQuery, usePreloadedQuery} from 'react-relay'
 import Avatar from '../../../../components/Avatar/Avatar'
 import DashNavControl from '../../../../components/DashNavControl/DashNavControl'
-import EditableAvatar from '../../../../components/EditableAvatar/EditableAvatar'
 import EditableOrgName from '../../../../components/EditableOrgName'
 import SettingsWrapper from '../../../../components/Settings/SettingsWrapper'
 import useDocumentTitle from '../../../../hooks/useDocumentTitle'
@@ -13,10 +12,10 @@ import useRouter from '../../../../hooks/useRouter'
 import {PALETTE} from '../../../../styles/paletteV3'
 import defaultOrgAvatar from '../../../../styles/theme/images/avatar-organization.svg'
 import {OrganizationQuery} from '../../../../__generated__/OrganizationQuery.graphql'
-import BillingMembersToggle from '../BillingMembersToggle/BillingMembersToggle'
 import UserSettingsWrapper from '../UserSettingsWrapper/UserSettingsWrapper'
 import OrganizationDetails from './OrganizationDetails'
 import OrganizationPage from './OrganizationPage'
+import BillingMembersToggle from '../BillingMembersToggle/BillingMembersToggle'
 
 const AvatarAndName = styled('div')({
   alignItems: 'flex-start',
@@ -110,7 +109,6 @@ const Organization = (props: Props) => {
   if (!organization) return <div />
   const {orgId, createdAt, isBillingLeader, picture: orgAvatar, tier} = organization
   const pictureOrDefault = orgAvatar || defaultOrgAvatar
-  const onlyShowMembers = !isBillingLeader && tier !== 'personal'
   return (
     <UserSettingsWrapper>
       <SettingsWrapper narrow>
@@ -123,15 +121,9 @@ const Organization = (props: Props) => {
         </BackControlBlock>
         <AvatarAndName>
           {modalPortal(<OrgAvatarInput picture={pictureOrDefault} orgId={orgId} />)}
-          {isBillingLeader ? (
-            <div onClick={togglePortal}>
-              <EditableAvatar hasPanel picture={pictureOrDefault} size={64} unstyled />
-            </div>
-          ) : (
-            <AvatarBlock>
-              <Avatar picture={pictureOrDefault} size={64} sansRadius sansShadow />
-            </AvatarBlock>
-          )}
+          <AvatarBlock>
+            <Avatar picture={pictureOrDefault} size={64} sansRadius sansShadow />
+          </AvatarBlock>
           <OrgNameAndDetails>
             {isBillingLeader ? (
               <EditableOrgName organization={organization} />
@@ -141,11 +133,9 @@ const Organization = (props: Props) => {
             <OrganizationDetails createdAt={createdAt} tier={tier} />
           </OrgNameAndDetails>
         </AvatarAndName>
-        {!onlyShowMembers && (
-          <ToggleNavBlock>
-            <BillingMembersToggle orgId={orgId} />
-          </ToggleNavBlock>
-        )}
+        <ToggleNavBlock>
+          <BillingMembersToggle orgId={orgId} />
+        </ToggleNavBlock>
         <OrganizationPage organization={organization} />
       </SettingsWrapper>
     </UserSettingsWrapper>

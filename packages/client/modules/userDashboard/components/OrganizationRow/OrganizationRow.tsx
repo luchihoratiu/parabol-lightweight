@@ -99,13 +99,6 @@ const OrganizationRow = (props: Props) => {
     history.push(`/me/organizations/${orgId}`)
   }
   const totalUsers = activeUserCount + inactiveUserCount
-  const showUpgradeCTA = tier === 'personal'
-  const upgradeCTALabel = (
-    <span>
-      {'Upgrade to '}
-      <b>{TierLabel.PRO}</b>
-    </span>
-  )
   const {tooltipPortal, openTooltip, closeTooltip, originRef} = useTooltip<HTMLButtonElement>(
     MenuPosition.UPPER_CENTER
   )
@@ -129,11 +122,6 @@ const OrganizationRow = (props: Props) => {
           </StyledRowInfoCopy>
         </StyledRowInfo>
         <RowActions>
-          {showUpgradeCTA && (
-            <StyledFlatButton onClick={onRowClick} palette={'blue'}>
-              {upgradeCTALabel}
-            </StyledFlatButton>
-          )}
           <StyledButton
             onClick={onRowClick}
             onMouseEnter={openTooltip}

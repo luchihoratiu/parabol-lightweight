@@ -18,12 +18,6 @@ const BillingMembersToggle = (props: Props) => {
   const activeOrgDetail = areaMatch?.params.area ?? BILLING_PAGE
   const items = [
     {
-      label: 'Billing',
-      icon: 'credit_card',
-      isActive: activeOrgDetail === BILLING_PAGE,
-      onClick: () => history.push(`/me/organizations/${orgId}/${BILLING_PAGE}`)
-    },
-    {
       label: 'Members',
       icon: 'group',
       isActive: activeOrgDetail === MEMBERS_PAGE,
