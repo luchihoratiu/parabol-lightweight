@@ -1,114 +1,111 @@
-# Parabol - We're [hiring](https://www.parabol.co/join)!
-
-[![Slack Status](https://slackin.parabol.co/badge.svg)](https://slackin.parabol.co/)
-[![CircleCI](https://circleci.com/gh/ParabolInc/parabol.svg?style=svg)](https://circleci.com/gh/ParabolInc/parabol)
-
-## Overview
+## Original project's overview
 
 [Parabol](https://www.parabol.co) is an open-source application for running
-agile meetings such as team retrospectives or Sprint Poker™. You may try
-a single-player demo of Parabol (no login creation required) at: https://parabol.co/retro-demo
-
-We endeavor to be a
-transparent organization and publish
-our company's [history and SaaS metrics](https://www.parabol.co/blog/tag/friday-ship).
-
+the agile meetings Team Retrospective, Sprint Poker™ and Team Check-in. You may try
+a single-player demo of the latest implementation of Parabol (no login creation required) at: https://parabol.co/retro-demo
 ![Dashboard](./docs/images/d2.gif)
 ![Discuss](./docs/images/d1.gif)
 
-## Stack Information
+Make sure to check the original project at https://github.com/ParabolInc/parabol for more information about them and their continous work.
 
-| Concern                | Solution                                                        |
-| ---------------------- | --------------------------------------------------------------- |
-| Server                 | [Node](https://nodejs.org/)                                     |
-| Server Framework       | [μWebSockets.js](https://github.com/uNetworking/uWebSockets.js) |
-| Database (Legacy)      | [RethinkDB](https://www.rethinkdb.com/)                         |
-| Database               | [PostgreSQL](https://www.postgresql.org/)                       |
-| PubSub & Cache         | [Redis](https://redis.io)                                       |
-| Data Transport         | [GraphQL](https://github.com/graphql/graphql-js)                |
-| Real-time Connectivity | [trebuchet](https://github.com/mattkrick/trebuchet-client)      |
-| Client Cache           | [Relay](https://facebook.github.io/relay/)                      |
-| UI Framework           | [React](https://facebook.github.io/react/)                      |
-| Styling                | [Emotion](https://emotion.sh/)                                  |
+## Parabol Lightweight overview
+Yet another fork in the pool of forks, but this one aims to work well on a Raspberry Pi 4 and lose some (hopefully more in the future) weight.
+[DietPi](https://github.com/MichaIng/DietPi) was my choice for OS to run and test on but anything (especially Debian based) should work (with enough patience and tinkering).
 
-## Setup
-
-### Prerequisites
-
-- [Node](https://nodejs.org/en/download/)
-- [Yarn](https://classic.yarnpkg.com/en/docs/cli/install/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- [Watchman](https://facebook.github.io/watchman/docs/install.html) (Development only)
-
-### Installation
-
+## Installation
 ```bash
-$ git clone https://github.com/ParabolInc/parabol.git
-$ cd parabol
-$ cp .env.example .env # Add your own vars here
-$ yarn
-$ yarn db:start
-$ yarn dev
+# Install Node with nvm
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+source /root/.bashrc
+nvm install 16.14.0
+
+# Install Yarn with yvm
+curl -s https://raw.githubusercontent.com/tophat/yvm/master/scripts/install.js | node
+source /root/.yvm/yvm.sh
+yvm install
+
+# Install dependencies
+apt-get install ca-certificates curl gnupg lsb-release make cmake gcc g++ -y
+apt-get install libvips-dev --no-install-recommends -y
+
+# Install docker and its dependencies
+apt-get remove docker docker-engine docker.io containerd runc
+mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install git docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+
+# Clone this repository
+git clone https://github.com/luchihoratiu/parabol-lightweight.git
+cd parabol-lightweight
+
+# Create .env settings (You shouldn't need to change anything but feel free)
+cp .env.lightweight .env
+
+# Prepare environment
+# Expect many errors the first time but running all of them twice solves all the issues
+# (Order of commands might be wrong but couldn't find the correct one yet)
+yarn
+yarn db:start
+yarn install
+yarn update-schema
+yarn relay
+yarn db:start
+yarn db:migrate
+yarn pg:migrate up
+yarn db:migrate up
+yarn pg:build
+yarn build
+
+# Start application
+yarn start
 ```
 
-- By default, the app will run at: http://localhost:3000/
-
-- If `yarn db:start` failed and `localhost:5050` isn't working, a docker
-  container, volume, or image may be corrupted and need to be pruned.
-
-### Development
-
-- [Code Reviews](./docs/codeReview.md)
-- [Create new GraphQL Mutations](./packages/server/graphql/public/README.md)
-- [Docker](./docker/README.md)
-- [Dev.js](./scripts/README.md)
-- [File Storage (CDN, Local, S3)](./packages/server/fileStorage/README.md)
-- [GraphiQL, Private Schema Admin](./packages/server/graphql/private/README.md)
-- [GraphQL Executor](./packages/gql-executor/README.md)
-- [Integrations (GitHub, Jira, Slack, etc.)](./docs/integrations.md)
-- [PostgreSQL](./packages/server/postgres/README.md)
-- [RethinkDB](./packages/server/database/README.md)
-- [Shared Scripts](./packages/client/shared/README.md)
-- [VS Code Tips](.vscode/tips.md)
-
-### Deploy
-
+## Optional
+### Run it as a service
 ```bash
-$ yarn && yarn build && yarn start
+cd /etc/systemd/system
+nano parabol.service
+
+# Add following lines and adapt paths/user to match yours
+[Unit]
+Description=Parabol
+ 
+[Service]
+User=root
+WorkingDirectory=/root/parabol-lightweight
+ExecStart=/bin/bash -c 'source /root/.nvm/nvm.sh && source /root/.yvm/yvm.sh && cd /root/parabol-ligthweight && yarn db:start && yarn start'
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-- [How to Ship](./docs/deployment.md)
+Let systemctl know of your changes:
+```bash
+# Reload
+systemctl daemon-reload
 
-## Getting Involved
+# Enable
+systemctl enable parabol
 
-Parabol offers equity for qualified contributions.
+# Start
+systemctl start parabol
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information on how to
-get involved and how to get compensated.
+# Check status
+systemctl status parabol
+```
 
-## Have feedback, ideas or feature requests?
+### Overclock CPU
+# WARNING - Use at your own risk
+```bash
+echo "over_voltage=11" >> /boot/config.txt
+echo "arm_freq=2300" >> /boot/config.txt
+echo "arm_freq_min=2300" >> /boot/config.txt
+echo "current_limit_override=1" >> /boot/config.txt
+echo "force_turbo=1" >> /boot/config.txt
+```
+# WARNING - Use at your own risk
 
-Please review our [Discussions](https://github.com/ParabolInc/parabol/discussions) to see if there's already a similar suggestion, and if not please feel free to [start a new one](https://github.com/ParabolInc/parabol/discussions/new).
-
-## Releases
-
-For details on all releases, refer to [CHANGELOG.md](./CHANGELOG.md).
-
-## Parabol Core Team
-
-- [Jordan Husney](https://github.com/jordanh)
-- [Terry Acker](https://github.com/ackernaut)
-- [Matt Krick](https://github.com/mattkrick)
-
-## Parabol Maintainers
-
-- [Matt Krick](https://github.com/mattkrick)
-- [Georg Bremer](https://github.com/Dschoordsch)
-
-## License
-
-Copyright (c) 2016-present, Parabol, Inc.
-
-This codebase is dual-licensed under the GNU AFFERO GENERAL PUBLIC LICENSE,
-Version 3.0 while holding, at Parabol's sole discretion, the right to create
-new licenses. For details please read [LICENSE](LICENSE).
+#### Useful links:
+Check https://dietpi.com/docs/usage/#how-to-do-an-automatic-base-installation-at-first-boot for how to use files from `.dietpi` folder.
