@@ -5,7 +5,6 @@ import {useFragment} from 'react-relay'
 import useAtmosphere from '~/hooks/useAtmosphere'
 import SendClientSegmentEventMutation from '~/mutations/SendClientSegmentEventMutation'
 import useModal from '../hooks/useModal'
-import CreditCardModal from '../modules/userDashboard/components/CreditCardModal/CreditCardModal'
 import {PALETTE} from '../styles/paletteV3'
 import {InsightsDomainNudge_domain$key} from '../__generated__/InsightsDomainNudge_domain.graphql'
 import PrimaryButton from './PrimaryButton'
@@ -94,15 +93,6 @@ const InsightsDomainNudge = (props: Props) => {
   const {togglePortal, closePortal, modalPortal} = useModal()
   return (
     <>
-      {modalPortal(
-        <CreditCardModal
-          // will be null if they successfully upgraded their last free org
-          activeUserCount={biggestOrganization?.orgUserCount?.activeUserCount ?? 0}
-          orgId={biggestOrganization?.id ?? ''}
-          actionType={'upgrade'}
-          closePortal={closePortal}
-        />
-      )}
       {showNudge && (
         <NudgeBlock>
           <OverLimitBlock>

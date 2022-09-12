@@ -127,7 +127,7 @@ const OrgMemberRow = (props: Props) => {
       <StyledRowInfo>
         <RowInfoHeader>
           <RowInfoHeading>{preferredName}</RowInfoHeading>
-          {isBillingLeader && <RoleTag>{'Billing Leader'}</RoleTag>}
+          {isBillingLeader && <RoleTag>{'Organization Leader'}</RoleTag>}
           {inactive && !isBillingLeader && <InactiveTag>{'Inactive'}</InactiveTag>}
           {new Date(newUserUntil) > new Date() && <EmphasisTag>{'New'}</EmphasisTag>}
         </RowInfoHeader>
@@ -151,7 +151,7 @@ const OrgMemberRow = (props: Props) => {
             >
               {tooltipPortal(
                 <div>
-                  {'You need to promote another Billing Leader'}
+                  {'You need to promote another Organization Leader'}
                   <br />
                   {'before you can leave this role or Organization.'}
                 </div>

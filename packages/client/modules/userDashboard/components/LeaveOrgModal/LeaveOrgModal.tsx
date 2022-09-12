@@ -44,7 +44,7 @@ const LeaveOrgModal = (props: Props) => {
       <DialogContent>
         {'This will remove you from the organization and all teams under it! '}
         <br />
-        {'To undo it, you’ll have to ask another Billing Leader to re-add you.'}
+        {'To undo it, you’ll have to ask another Organization Leader to re-add you.'}
         <StyledButton size='medium' onClick={handleClick} waiting={submitting}>
           <IconLabel icon='arrow_forward' iconAfter label='Leave the organization' />
         </StyledButton>
