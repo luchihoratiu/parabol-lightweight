@@ -127,9 +127,8 @@ const NewMeeting = (props: Props) => {
   const {insights} = featureFlags
   const [meetingOrder, setMeetingOrder] = useState<MeetingTypeEnum[]>([
     'retrospective',
-    'teamPrompt',
-    'poker',
-    'action'
+    'action',
+    'poker'
   ])
 
   const {history, location} = useRouter()

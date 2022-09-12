@@ -62,19 +62,6 @@ const Card = styled('div')<{isActive: boolean; meetingType: keyof typeof BACKGRO
   })
 )
 
-const Badge = styled('div')({
-  position: 'absolute',
-  top: -8,
-  right: -8,
-  background: PALETTE.GRAPE_500,
-  color: PALETTE.WHITE,
-  fontSize: 12,
-  fontWeight: 600,
-  padding: '6px 14px',
-  borderRadius: 24,
-  textTransform: 'uppercase'
-})
-
 const ILLUSTRATIONS = {
   retrospective,
   action,
@@ -145,7 +132,7 @@ const NewMeetingCarousel = (props: Props) => {
         breakpoints={{
           [Breakpoint.FUZZY_TABLET]: {
             slidesOffsetBefore: 24,
-            slidesPerView: 3.5,
+            slidesPerView: 2.5,
             slideToClickedSlide: true,
             centeredSlides: false,
             centeredSlidesBounds: false
@@ -173,7 +160,6 @@ const NewMeetingCarousel = (props: Props) => {
                 <MeetingImage src={src} key={meetingType} />
                 <Title isActive={isActive}>{title}</Title>
                 <Description isActive={isActive}>{description}</Description>
-                {meetingType === 'teamPrompt' && <Badge>Beta</Badge>}
               </Card>
             </SwiperSlide>
           )
